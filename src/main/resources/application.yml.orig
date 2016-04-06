@@ -1,0 +1,25 @@
+#Mail Settings
+gmail:
+  host: smpt.gmail.com
+  password: Z00xMu$1c
+  port: 587
+  protocol: smtp
+  username: brian@zooxmusic.com
+
+environments:
+    dev:
+        url: http://dev.bar.com
+        name: Developer Setup
+    prod:
+        url: http://foo.bar.com
+        name: My Cool App
+spring:
+  profiles:
+    default: dev
+  application:
+    name: My Development Asshole
+    url: http://foo.bar.com
+
+logging:
+  level:
+    root: DEBUG

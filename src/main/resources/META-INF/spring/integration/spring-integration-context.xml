@@ -32,6 +32,23 @@
 
 	<context:component-scan base-package="com.aeg"/>
 
+	<bean id="freemarkerConfig" class="com.aeg.mail.FreemarkerConfig"/>
+
+	<!--
+	<bean id="successTemplate" class="com.aeg.mail.SuccessTemplate">
+		<property name="from" value="${mail.smtp.success.from}"/>
+		<property name="to" value="${mail.smtp.success.to}"/>
+		<property name="subject" value="${mail.smtp.success.subject}"/>
+	</bean>
+
+	<bean id="errorTemplate" class="com.aeg.mail.ErrorTemplate">
+		<property name="from" value="${mail.smtp.error.from}"/>
+		<property name="to" value="${mail.smtp.error.to}"/>
+		<property name="subject" value="${mail.smtp.error.subject}"/>
+
+	</bean>
+
+-->
 
 	<int-sftp:outbound-gateway id="gwMget"
 							   session-factory="sftpSessionFactory"

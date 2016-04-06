@@ -3,10 +3,12 @@ package com.aeg.config;
 import com.aeg.transfer.filter.XmlFileListFilter;
 import com.jcraft.jsch.ChannelSftp;
 import org.codehaus.groovy.ast.stmt.ExpressionStatement;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.integration.channel.DirectChannel;
@@ -31,7 +33,7 @@ import java.util.List;
 
 @EnableIntegration
 @Configuration
-//@ConfigurationProperties(locations = {"/META-INF/spring/integration/integration.properties"})
+@ImportResource({"classpath*:META-INF/spring/integration/*-context.xml"})
 public class IntegrationConfig {
 
     @Value("${default.port}")
@@ -48,7 +50,7 @@ public class IntegrationConfig {
     }
 
     @Bean
-    public SessionFactory<ChannelSftp.LsEntry> defaultSftpSessionFactory() {
+    public DefaultSftpSessionFactory defaultSftpSessionFactory() {
         DefaultSftpSessionFactory sftpSessionFactory = new DefaultSftpSessionFactory();
         sftpSessionFactory.setHost("${default.host}");
         sftpSessionFactory.setPort(defaultPort);

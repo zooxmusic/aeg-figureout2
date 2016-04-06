@@ -3,14 +3,13 @@ package com.aeg.transfer.partner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-/**
- * Created by bszucs on 4/6/2016.
- */
+
 public class PartnerWriter {
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         writeDefaultData();
-    }
+    }*/
+
     public static void writeDefaultData() {
         Partners partners = new Partners();
         Partner cr = new Partner();

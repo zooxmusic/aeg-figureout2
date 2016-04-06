@@ -1,0 +1,7 @@
+logging:
+  level:
+    root: INFO
+spring:
+  application:
+    name: My QA App
+    url: http://foo.bar.com

@@ -1,0 +1,15 @@
+logging:
+  level:
+    root: DEBUG
+spring:
+  application:
+    name: My Development Asshole
+    url: http://foo.bar.com
+
+  #Mail Settings
+gmail:
+  host: smpt.gmail.com # SMTP server host. For instance `smtp.example.com`
+  password: Z00xMu$1c# Login password of the SMTP server.
+  port: 587 # SMTP server port.
+  protocol: smtp # Protocol used by the SMTP server.
+  username: brian@zooxmusic.com # Login user of the SMTP server.
