@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:int="http://www.springframework.org/schema/integration"
+	   xmlns:int-sftp="http://www.springframework.org/schema/integration/sftp"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/sftp http://www.springframework.org/schema/integration/sftp/spring-integration-sftp.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--
+	<context:property-placeholder location="classpath:META-INF/spring/integration/integration.properties"/>
+
+	<bean id="dirBean" class="com.aeg.config.DirBean"/>
+
+	<bean id="sftpSessionFactory" class="org.springframework.integration.sftp.session.DefaultSftpSessionFactory">
+		<property name="host" value="${default.host}" />
+		<property name="port" value="${default.port}"/>
+		<property name="user" value="${default.username}" />
+		<property name="password" value="${default.password}" />
+		<property name="allowUnknownKeys" value="true"/>
+	</bean>
+	<int:channel id="outboundChannel">
+		<int:queue />
+	</int:channel>
+
+	<int:channel id="inboundChannel" />
+-->
+	<context:property-placeholder location="classpath:META-INF/spring/integration/integration.properties"/>
+
+	<context:component-scan base-package="com.aeg"/>
+
+
+	<int-sftp:outbound-gateway id="gwMget"
+							   session-factory="sftpSessionFactory"
+							   request-channel="inboundChannel"
+							   command="mget"
+							   expression="payload"
+							   filename-regex=".*\.xml"
+							   command-options="-R"
+							   use-temporary-file-name="false"
+							   auto-create-local-directory="true"
+							   remote-directory-expression="@dirBean.remoteDir"
+							   local-directory-expression="@dirBean.localDir"
+							   mode="IGNORE"
+							   reply-channel="outboundChannel">
+		<int-sftp:request-handler-advice-chain>
+			<int:retry-advice />
+		</int-sftp:request-handler-advice-chain>
+	<!--
+		<int-sftp:request-handler-advice-chain>
+			<beans:bean class="org.springframework.integration.handler.advice.ExpressionEvaluatingRequestHandlerAdvice">
+				<beans:property name="onSuccessExpression" value="payload.renameTo(payload.name + '.done')"/>
+				<beans:property name="successChannel" ref="mailMsgTransformer"/>
+				<beans:property name="onFailureExpression" value="payload.renameTo(payload.name + '.error')"/>
+				<beans:property name="failureChannel" ref="mailMsgTransformer" />
+			</beans:bean>
+		</int-sftp:request-handler-advice-chain>
+		-->
+	</int-sftp:outbound-gateway>
+
+
+</beans>
