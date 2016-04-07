@@ -88,42 +88,7 @@ war {
 }
 
 cargoDeployRemote.dependsOn war
-cargoRunLocal.dependsOn war
 
-cargo {
-
-    deployable {
-        context = 'aeg'
-    }
-
-    remote {
-        port = 9080
-        containerId = 'tomcat7x'
-        hostname = '10.50.100.210'
-        username = 'aeg'
-        password = 'AEG2016!!'
-    }
-    dependencies {
-        providedCompile("javax.servlet:javax.servlet-api:3.1.0")
-        cargo(
-                ['org.codehaus.cargo:cargo-core-uberjar:1.4.19'],
-                ['org.codehaus.cargo:cargo-ant:1.4.19'],
-                ['jaxen:jaxen:1.1.6'],
-                ["commons-logging:commons-logging:1.2"]
-        )
-    }
-    local {
-        port = 8080
-        containerId = 'tomcat6x'
-        homeDir = file(System.getenv('CATALINA_HOME'))
-        outputFile = file('build/output.log')
-        timeout = 60000
-
-        containerProperties {
-            property 'cargo.tomcat.ajp.port', 8009
-        }
-    }
-}
 
 dependencies {
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
@@ -204,6 +169,42 @@ dependencies {
     )
 
 }
+
+
+cargo {
+    port = 9080
+    containerId = 'tomcat7x'
+
+    deployable {
+        context = 'aeg'
+    }
+
+    remote {
+        hostname = '10.50.100.210'
+        username = 'aeg'
+        password = 'AEG2016!!'
+    }
+    dependencies {
+        providedCompile("javax.servlet:javax.servlet-api:3.1.0")
+        cargo(
+                ['org.codehaus.cargo:cargo-core-uberjar:1.4.19'],
+                ['org.codehaus.cargo:cargo-ant:1.4.19'],
+                ['jaxen:jaxen:1.1.6'],
+                ["commons-logging:commons-logging:1.2"]
+        )
+    }
+
+    /*local {
+        homeDir = file(System.getenv('CATALINA_HOME'))
+        outputFile = file('build/output.log')
+        timeout = 60000
+
+        containerProperties {
+            property 'cargo.tomcat.ajp.port', 8009
+        }
+    }*/
+}
+
 /*
 tomcat {
     httpPort = 9080
