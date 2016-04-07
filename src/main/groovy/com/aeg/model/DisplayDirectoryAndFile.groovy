@@ -4,12 +4,12 @@ import java.io.File;
 
 public class DisplayDirectoryAndFile {
 
-    public static void main (String[] args) {
+    public void display() {
 
         displayIt(new File("C:\\Downloads"));
     }
 
-    public static void displayIt(File node){
+    public void displayIt(File node){
 
         System.out.println(node.getAbsoluteFile());
 

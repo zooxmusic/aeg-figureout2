@@ -2,6 +2,9 @@ package com.aeg.config;
 
 import com.aeg.transfer.partner.Partner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.context.support.StaticApplicationContext;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,6 +17,7 @@ public class DirBean {
 
     private String localDir;
     private String remoteDir;
+    private String pattern;
 
     public void setLocation(Partner partner) {
         this.host = partner.getHost();
@@ -22,6 +26,11 @@ public class DirBean {
         this.password = partner.getPassword();
     }
     public String getLocalDir() {
+        if(null == localDir || "".equalsIgnoreCase(localDir)) {
+            GenericApplicationContext parent = new StaticApplicationContext();
+            Environment env = parent.getEnvironment();
+            return env.getProperty("java.io.tmpdir");
+        }
         return localDir;
     }
 
@@ -51,5 +60,13 @@ public class DirBean {
 
     public void setRemoteDir(String remoteDir) {
         this.remoteDir = remoteDir;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
     }
 }

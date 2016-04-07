@@ -5,7 +5,7 @@ import java.nio.file.Paths
 import java.nio.file.attribute.BasicFileAttributes
 class DirectoryList {
 
-    public static void main(String[] args) {
+    public void list() {
         Path dir = Paths.get('resources') //<1>
         BasicFileAttributes attrs = Files.readAttributes(dir, BasicFileAttributes) //<2>
 

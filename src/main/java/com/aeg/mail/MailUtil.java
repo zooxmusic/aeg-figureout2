@@ -12,7 +12,7 @@ import java.util.Map.Entry;
 
 import javax.mail.internet.MimeMessage;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.joda.time.LocalDate;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -20,7 +20,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import freemarker.cache.FileTemplateLoader;
 
-@Slf4j
+@Log4j2
 public class MailUtil {
 
     public static Map<String, File> createAttachments(List<String> attachmentNames) {
@@ -31,7 +31,7 @@ public class MailUtil {
             try {
                 attachments.put(fileName, new File(fileName));
             }catch(Exception e) {
-                log.error(e.getMessage(), e);
+                //log.error(e.getMessage(), e);
             }
         }
 
@@ -88,10 +88,10 @@ public class MailUtil {
 
         } catch (Exception ex) {
 
-            log.error("Failed to create email for templated message:" +
+            /*log.error("Failed to create email for templated message:" +
                     "\nFrom:" + from +
                     "\nTo:" + recipients +
-                    "\nMessageMap:" + freeMarkderTemplateMap, ex);
+                    "\nMessageMap:" + freeMarkderTemplateMap, ex);*/
 
         }
         return preparator;

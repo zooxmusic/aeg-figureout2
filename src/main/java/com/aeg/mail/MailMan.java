@@ -1,6 +1,7 @@
 package com.aeg.mail;
 
-import lombok.extern.slf4j.Slf4j;
+
+import lombok.extern.log4j.Log4j2;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-@Slf4j
+@Log4j2
 public class MailMan extends JavaMailSenderImpl {
 
     private final static String DEFAULT_TEMPLATE = "default.ftl";
@@ -57,7 +58,7 @@ public class MailMan extends JavaMailSenderImpl {
         try {
             send(message);
         } catch (MailException e) {
-            log.error("Failed to send email for templated message", e);
+            //log.error("Failed to send email for templated message", e);
         }
     }
 
@@ -65,10 +66,10 @@ public class MailMan extends JavaMailSenderImpl {
         try{
             send(message);
         } catch (MailException ex) {
-            log.error("Failed to send email for templated message:" +
+            /*log.error("Failed to send email for templated message:" +
                     "\nFrom:" + message.getFrom() +
                     "\nTo:" + message.getTo() +
-                    "\nMessage:" + message.getText(), ex);
+                    "\nMessage:" + message.getText(), ex);*/
         }
     }
 }

@@ -7,7 +7,7 @@ import groovy.json.JsonBuilder
  */
 class IMSTransferBuilder {
 
-    public static void main(String[] args) {
+    public void execute() {
         String aegHome = System.env['AEG_HOME']
         Composite root = new Composite("AEG", aegHome)
         Composite imsTransfers = new Composite("IMSTransferFiles", root);
@@ -31,7 +31,7 @@ class IMSTransferBuilder {
         println new JsonBuilder( imsTransfers ).toPrettyString()*/
     }
 
-    private static void addInboundSubstructure(Composite pm) {
+    private void addInboundSubstructure(Composite pm) {
         new Composite("New", pm);
         new Composite("Working", pm);
         new Composite("XML_Applications", pm);

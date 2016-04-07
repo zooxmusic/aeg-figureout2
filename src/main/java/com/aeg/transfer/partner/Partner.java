@@ -50,7 +50,7 @@ public class Partner {
     }
 
     public Collection<FileMapping> getOutboundFileMappings() {
-        return inboundFileMappings;
+        return outboundFileMappings;
     }
 
     public int getPort() {

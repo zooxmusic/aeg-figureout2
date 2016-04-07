@@ -1,7 +1,0 @@
-logging:
-  level:
-    root: WARN
-spring:
-  application:
-    name: My Production App
-    url: http://foo.bar.com

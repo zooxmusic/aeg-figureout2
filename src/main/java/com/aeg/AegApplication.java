@@ -19,21 +19,16 @@ import com.aeg.config.ApplicationConfig;
 import com.aeg.config.EnvironmentValidator;
 import com.aeg.config.IntegrationConfig;
 import com.aeg.config.MailConfig;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.SpringApplication;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.env.Environment;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-import org.springframework.web.context.WebApplicationContext;
 
-@Slf4j
+@Log4j2
 @SpringBootApplication
 @EnableConfigurationProperties
 @Import({IntegrationConfig.class, ApplicationConfig.class, MailConfig.class})
@@ -49,25 +44,11 @@ public class AegApplication extends SpringBootServletInitializer{
 		return builder.sources(AegApplication.class);
 	}
 
-	@Override
-	protected WebApplicationContext run(SpringApplication application) {
-		return super.run(application);
-	}
-
 	public static void main(String[] args) {
-
-		ConfigurableApplicationContext context = new SpringApplicationBuilder()
+		new SpringApplicationBuilder()
 				.sources(AegApplication.class)
 				.profiles()
 				.run(args);
-		Environment env = context.getEnvironment();
-		boolean hasConfig = env.containsProperty("spring.config.location");
-		System.out.println(context.getBean(MailConfig.FooService.class).foo("foo"));
-
-		String configLoc =env.getProperty("spring.config.location");
-
-		String name = env.getProperty("spring.application.name");
-		System.out.println("Does my environment contain the ''spring.application.name'' property? " + name + "  hasConfig " + hasConfig + " value: " + configLoc);
 
 	}
 

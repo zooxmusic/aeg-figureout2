@@ -63,8 +63,8 @@ public class MailConfig {
                 .enrichHeaders(Mail.headers()
                         .subject("Transfer Email")
                         .to("bszucs@ameresco.com")
-                        .from("transfer@aeg.com"))
-                .handle(MailFactory.outboundAdapter(gmail.getHost()))
+                        .from("transferInbound@aeg.com"))
+                .handle(MailFactory.outboundAdapter("smtp.gmail.com"))
                 .get();
                 /*.handle(Mail.outboundAdapter(gmail.getHost())
                         .credentials(gmail.getUsername(), gmail.getPassword())

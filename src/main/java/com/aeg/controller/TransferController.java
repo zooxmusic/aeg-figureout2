@@ -1,30 +1,61 @@
 package com.aeg.controller;
 
 import com.aeg.model.TransferResult;
-import com.aeg.transfer.service.TransferService;
-import lombok.extern.slf4j.Slf4j;
+import com.aeg.service.TransferService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@Slf4j
+@Log4j2
 @RestController
 public class TransferController {
 
     @Autowired
     private TransferService transferService;
 
-    @RequestMapping(value = "/transfer", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public TransferResult transfer(@RequestParam(value = "partner", defaultValue="") String partner) {
+    @RequestMapping(value = "/inbound/transfer", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public TransferResult transferAllInbound() {
         try {
-            transferService.transfer(partner);
+            transferService.transferInbound();
         }catch(Exception e) {
-            log.error(e.getMessage());
-            return TransferResult.failed();
+            //log.error(e.getMessage());
+            return TransferResult.failed(e.getMessage());
         }
         return TransferResult.successful();
     }
+
+    @RequestMapping(value = "/inbound/transfer/{partner}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public TransferResult transferInbound(@PathVariable String partner) {
+        try {
+            transferService.transferInbound(partner);
+        }catch(Exception e) {
+            //log.error(e.getMessage());
+            return TransferResult.failed(e.getMessage());
+        }
+        return TransferResult.successful();
+    }
+
+    @RequestMapping(value = "/outbound/transfer/{partner}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public TransferResult transferOutbound(@PathVariable String partner) {
+        try {
+            transferService.transferOutbound(partner);
+        }catch(Exception e) {
+            //log.error(e.getMessage());
+            return TransferResult.failed(e.getMessage());
+        }
+        return TransferResult.successful();
+    }
+
+    @RequestMapping(value = "/outbound/transfer", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public TransferResult transferAllOutbound() {
+        try {
+            transferService.transferOutbound();
+        }catch(Exception e) {
+            //log.error(e.getMessage());
+            return TransferResult.failed(e.getMessage());
+        }
+        return TransferResult.successful();
+    }
+
 }

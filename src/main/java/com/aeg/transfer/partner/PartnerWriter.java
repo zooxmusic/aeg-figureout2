@@ -44,7 +44,7 @@ public class PartnerWriter {
 
         Partner icf = new Partner();
         icf.setName("ICF");
-        icf.setHost("transfer.icfwebservices.com");
+        icf.setHost("transferInbound.icfwebservices.com");
         icf.setPort(22);
         icf.setUsername("NJCEP_test");
         icf.setPassword("5YF08pcm");

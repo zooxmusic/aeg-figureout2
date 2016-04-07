@@ -8,35 +8,30 @@
       "password": "109F0r3$t",
       "inboundFileMappings": [
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/CR/XML_Applications",
+          "local": "#AEG_HOME/IMSTransferFiles/Inbound/CR/XML_Applications",
           "remote": "/HVAC - Files For Testing/",
           "pattern": "*.xml"
         },
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/CR/XML_Applications",
-          "remote": "/HPwES - Files For Testing/",
-          "pattern": "*.xml"
-        },
-        {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/CR/XML_Applications",
+          "local": "#AEG_HOME/IMSTransferFiles/Inbound/CR/XML_Applications",
           "remote": "/RNC - Files For Testing/",
           "pattern": "*.xml"
         }
       ],
       "outboundFileMappings": [
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/CR/XML_Applications",
-          "remote": "/HVAC - Files For Testing/",
+          "local": "#AEG_HOME/IMSTransferFiles/Outbound/CR/CHECK_STATUS/HVAC",
+          "remote": "/HVAC - Return XML/",
           "pattern": "*.xml"
         },
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/CR/XML_Applications",
-          "remote": "/HPwES - Files For Testing/",
+          "local": "#AEG_HOME/IMSTransferFiles/Outbound/CR/QA_STATUS/HVAC",
+          "remote": "/HVAC - Return XML/",
           "pattern": "*.xml"
         },
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/CR/XML_Applications",
-          "remote": "/RNC - Files For Testing/",
+          "local": "#AEG_HOME/IMSTransferFiles/Outbound/CR/CHECK_STATUS/RNC",
+          "remote": "/RNC - Return XML/",
           "pattern": "*.xml"
         }
       ]
@@ -49,35 +44,20 @@
       "password": "109F0r3$t",
       "inboundFileMappings": [
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/CRH/XML_Applications",
-          "remote": "/HVAC - Files For Testing/",
-          "pattern": "*.xml"
-        },
-        {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/CRH/New",
-          "remote": "/HPwES - Files For Testing/",
-          "pattern": "*.xml"
-        },
-        {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/CRH/XML_Applications",
-          "remote": "/RNC - Files For Testing/",
-          "pattern": "*.xml"
+          "local": "#AEG_HOME/IMSTransferFiles/Inbound/CRH/New",
+          "remote": "/HPeWS - Files For Testing/",
+          "pattern": "*.*"
         }
       ],
       "outboundFileMappings": [
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/CRH/XML_Applications",
-          "remote": "/HVAC - Files For Testing/",
+          "local": "#AEG_HOME/IMSTransferFiles/Outbound/CRH/CHECK_STATUS/HPWES",
+          "remote": "/HPWES - Return XML/",
           "pattern": "*.xml"
         },
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/CRH/New",
-          "remote": "/HPwES - Files For Testing/",
-          "pattern": "*.xml"
-        },
-        {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/CRH/XML_Applications",
-          "remote": "/RNC - Files For Testing/",
+          "local": "#AEG_HOME/IMSTransferFiles/Outbound/CRH/QA_STATUS/HPWES",
+          "remote": "/HPWES - Return XML/",
           "pattern": "*.xml"
         }
       ]
@@ -90,25 +70,20 @@
       "password": "5YF08pcm",
       "inboundFileMappings": [
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/ICF/XML_CheckStatus",
+          "local": "#AEG_HOME/IMSTransferFiles/Inbound/ICF/XML_CheckStatus",
           "remote": "/FromICF/CheckConfirmations/",
           "pattern": "*.xml"
         },
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/ICF/XML_CheckStatus",
+          "local": "#AEG_HOME/IMSTransferFiles/Inbound/ICF/XML_CheckStatus",
           "remote": "/FromICF/CheckStopClearVoids/",
           "pattern": "*.xml"
         }
       ],
       "outboundFileMappings": [
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/ICF/XML_CheckStatus",
-          "remote": "/FromICF/CheckConfirmations/",
-          "pattern": "*.xml"
-        },
-        {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/ICF/XML_CheckStatus",
-          "remote": "/FromICF/CheckStopClearVoids/",
+          "local": "#AEG_HOME/IMSTransferFiles/Outbound/ICF/PAYMENT_PROCESSING",
+          "remote": "/ToICF/CheckRequest/",
           "pattern": "*.xml"
         }
       ]
@@ -121,45 +96,45 @@
       "password": "$mHs#4\u0026U",
       "inboundFileMappings": [
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/AEG/XML_Applications",
+          "local": "#AEG_HOME/IMSTransferFiles/Inbound/AEG/XML_Applications",
           "remote": "/toIMS_UAT/SRP/",
           "pattern": "*.xml"
         },
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/ICF/XML_Applications",
+          "local": "#AEG_HOME/IMSTransferFiles/Inbound/ICF/XML_Applications",
           "remote": "/toIMS_UAT/EEP/",
           "pattern": "*.xml"
         },
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/ICF/XML_Applications",
+          "local": "#AEG_HOME/IMSTransferFiles/Inbound/ICF/XML_Applications",
           "remote": "/toIMS_UAT/REIP/",
           "pattern": "*.xml"
         },
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/ICF/XML_Applications",
+          "local": "#AEG_HOME/IMSTransferFiles/Inbound/ICF/XML_Applications",
           "remote": "/toIMS_UAT/CHP/",
           "pattern": "*.xml"
         }
       ],
       "outboundFileMappings": [
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/AEG/XML_Applications",
-          "remote": "/toIMS_UAT/SRP/",
+          "local": "C:/AEG/IMSTransferFiles/Outbound/AEG/VISION/SRP",
+          "remote": "/fromIMS_UAT/SRP/",
           "pattern": "*.xml"
         },
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/ICF/XML_Applications",
-          "remote": "/toIMS_UAT/EEP/",
+          "local": "C:/AEG/IMSTransferFiles/Outbound/AEG/VISION/EEP",
+          "remote": "/fromIMS_UAT/EEP/",
           "pattern": "*.xml"
         },
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/ICF/XML_Applications",
-          "remote": "/toIMS_UAT/REIP/",
+          "local": "C:/AEG/IMSTransferFiles/Outbound/AEG/VISION/NONSOLAR",
+          "remote": "/fromIMS_UAT/REIP/",
           "pattern": "*.xml"
         },
         {
-          "local": "C:/AEG/IMSTransferFiles/Inbound/ICF/XML_Applications",
-          "remote": "/toIMS_UAT/CHP/",
+          "local": "C:/AEG/IMSTransferFiles/Outbound/AEG/VISION/CHP",
+          "remote": "/fromIMS_UAT/CHP/",
           "pattern": "*.xml"
         }
       ]

@@ -2,12 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:int="http://www.springframework.org/schema/integration"
+	   xmlns:int-file="http://www.springframework.org/schema/integration/file"
 	   xmlns:int-sftp="http://www.springframework.org/schema/integration/sftp"
 	   xmlns:context="http://www.springframework.org/schema/context"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/integration
-		http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
 		http://www.springframework.org/schema/integration/sftp http://www.springframework.org/schema/integration/sftp/spring-integration-sftp.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!--
@@ -27,12 +28,12 @@
 	</int:channel>
 
 	<int:channel id="inboundChannel" />
--->
 	<context:property-placeholder location="classpath:META-INF/spring/integration/integration.properties"/>
-
+<bean id="freemarkerConfig" class="com.aeg.mail.FreemarkerConfig"/>
+-->
 	<context:component-scan base-package="com.aeg"/>
 
-	<bean id="freemarkerConfig" class="com.aeg.mail.FreemarkerConfig"/>
+
 
 	<!--
 	<bean id="successTemplate" class="com.aeg.mail.SuccessTemplate">
@@ -50,12 +51,12 @@
 
 -->
 
-	<int-sftp:outbound-gateway id="gwMget"
+	<int-sftp:outbound-gateway id="inboundGateway"
 							   session-factory="sftpSessionFactory"
 							   request-channel="inboundChannel"
 							   command="mget"
 							   expression="payload"
-							   filename-regex=".*\.xml"
+							   filename-regex="@dirBean.pattern"
 							   command-options="-R"
 							   use-temporary-file-name="false"
 							   auto-create-local-directory="true"
@@ -78,5 +79,44 @@
 		-->
 	</int-sftp:outbound-gateway>
 
+	<int:channel id="localChannel" />
 
+	<int-file:inbound-channel-adapter
+			channel="localChannel"
+			auto-startup="true"
+			prevent-duplicates="true"
+			auto-create-directory="true"
+			filename-pattern="@dirBean.pattern"
+			directory="#{dirBean.getLocalDir()}">
+		<int:poller fixed-delay="5000" error-channel="nullChannel" />
+	</int-file:inbound-channel-adapter>
+
+
+	<int-sftp:outbound-channel-adapter id="outboundGateway"
+									   session-factory="sftpSessionFactory"
+									   channel="localChannel"
+									   auto-create-directory="true"
+									   mode="REPLACE"
+									   remote-directory-expression="@dirBean.getRemoteDir()">
+		<int-sftp:request-handler-advice-chain>
+			<bean class="org.springframework.integration.handler.advice.ExpressionEvaluatingRequestHandlerAdvice">
+				<property name="onSuccessExpression" value="payload.renameTo(new java.io.File(payload.absolutePath + '.done'))" />
+				<property name="successChannel" ref="afterSuccessDeleteChannel" />
+				<property name="onFailureExpression" value="payload.renameTo(new java.io.File(payload.absolutePath + '.failed.to.send'))" />
+				<property name="failureChannel" ref="afterFailRenameChannel" />
+			</bean>
+		</int-sftp:request-handler-advice-chain>
+	</int-sftp:outbound-channel-adapter>
+
+	<int:transformer input-channel="afterSuccessDeleteChannel" output-channel="goodResultChannel"
+					 expression="'Removal of ' + inputMessage.payload.absolutePath + ' after transfer, result:' +
+		payload" />
+
+	<int:transformer input-channel="afterFailRenameChannel" output-channel="badResultChannel"
+					 expression="'Renaming of ' + payload.failedMessage.payload.absolutePath + ' after failed transfer, result:' +
+		payload.evaluationResult" />
+
+	<int:logging-channel-adapter id="goodResultChannel" level="INFO" />
+
+	<int:logging-channel-adapter id="badResultChannel" level="ERROR"/>
 </beans>

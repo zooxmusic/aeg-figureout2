@@ -11,6 +11,8 @@ buildscript {
         jcenter()
         maven { url 'http://jcenter.bintray.com' }
         maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "http://maven.antelink.com/content/repositories/central/" }
+        maven { url 'http://dl.bintray.com/sleroy/maven' }
     }
 
     dependencies {
@@ -20,12 +22,18 @@ buildscript {
                 ["org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"],
                 ["com.bmuschko:gradle-cargo-plugin:2.2.2"],
                 ["us.carrclan.david.gradle:gradle-site-plugin:0.2.0"],
-                ["com.diffplug.gradle.spotless:spotless:1.3.3"]
+                ["com.diffplug.gradle.spotless:spotless:1.3.3"],
+                ["me.champeau.gradle:jbake-gradle-plugin:0.2"],
+                ["org.asciidoctor:asciidoctor-java-integration:0.1.4"],
+                ["org.freemarker:freemarker:2.3.19"]
+                //["com.bmuschko:gradle-tomcat-plugin:2.2.4"]
+
         )
     }
 
 }
-
+//apply plugin: "com.bmuschko.tomcat"
+apply plugin: "me.champeau.jbake"
 apply plugin: "com.diffplug.gradle.spotless"
 apply plugin: "site"
 apply plugin: 'build-dashboard'
@@ -42,6 +50,9 @@ targetCompatibility = 1.8
 repositories {
     mavenCentral()
     jcenter()
+    maven {
+        url"http://maven.antelink.com/content/repositories/central/"
+    }
 }
 
 dependencyManagement {
@@ -54,8 +65,8 @@ configurations {
     //compile.exclude module: 'org.springframework.boot'
     all*.exclude group: 'spring-boot-starter-tomcat'
     all*.exclude group: 'spring-boot-starter-logging'
-    all*.exclude group: "logback-classic"
-    all*.exclude group: "commons-logging"
+    all*.exclude group: "ch.qos.logback"
+    all*.exclude group: "org.slf4j"
     all*.exclude group: "jboss-logging"
 }
 
@@ -63,16 +74,63 @@ configurations {
 site {
     url = "https://ims.example.com/joe"
 }
+
 spotless {
     freshmark {}
     java {}
 }
+
+
+war {
+    baseName = 'aeg'
+    archiveName 'aeg.war'
+
+}
+
+cargoDeployRemote.dependsOn war
+cargoRunLocal.dependsOn war
+
+cargo {
+
+    deployable {
+        context = 'aeg'
+    }
+
+    remote {
+        port = 9080
+        containerId = 'tomcat7x'
+        hostname = '10.50.100.210'
+        username = 'aeg'
+        password = 'AEG2016!!'
+    }
+    dependencies {
+        providedCompile("javax.servlet:javax.servlet-api:3.1.0")
+        cargo(
+                ['org.codehaus.cargo:cargo-core-uberjar:1.4.19'],
+                ['org.codehaus.cargo:cargo-ant:1.4.19'],
+                ['jaxen:jaxen:1.1.6'],
+                ["commons-logging:commons-logging:1.2"]
+        )
+    }
+    local {
+        port = 8080
+        containerId = 'tomcat6x'
+        homeDir = file(System.getenv('CATALINA_HOME'))
+        outputFile = file('build/output.log')
+        timeout = 60000
+
+        containerProperties {
+            property 'cargo.tomcat.ajp.port', 8009
+        }
+    }
+}
+
 dependencies {
-
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     compile(
-
             // Spring Starter
             ["org.springframework.boot:spring-boot-starter-web"],
+            ["org.springframework.boot:spring-boot-starter-actuator"],
           //  ["org.springframework.boot:spring-boot-starter-freemarker"],
             ["org.springframework.boot:spring-boot-starter-log4j2"],
             //["org.springframework.boot:spring-boot-starter-data-jpa"],
@@ -90,6 +148,7 @@ dependencies {
 
             // Spring Data
 //            ["org.springframework.data:spring-data-jpa"],
+
 
             // Spring Batch
             ["org.springframework.batch:spring-batch-core"],
@@ -127,6 +186,7 @@ dependencies {
             ["org.slf4j:slf4j-api:1.7.+"],
             ["ch.qos.logback:logback-classic:1.+"]
 
+
     )
 
     testCompile(
@@ -144,36 +204,47 @@ dependencies {
     )
 
 }
-
-
-cargo {
-    containerId = 'tomcat6x'
-    port = 9090
-
-    deployable {
-        context = 'imsApp'
-    }
-
-    remote {
-        hostname = 'cloud.internal.it'
-        username = 'superuser'
-        password = 'secretpwd'
-    }
-
-    local {
-        homeDir = file('/home/bszucs/dev/tools/apache-tomcat-6.0.32')
-        outputFile = file('build/output.log')
-        timeout = 60000
-
-        containerProperties {
-            property 'cargo.tomcat.ajp.port', 9099
+/*
+tomcat {
+    httpPort = 9080
+    httpsPort = 9443
+    enableSSL = false
+    contextPath = 'transfer'
+    users {
+        user {
+            username = 'aeg'
+            password = 'AEG2016!!'
+            roles = ['manager-script','admin', 'manager-jmx', 'manager-gui']
         }
     }
-}
+
+    dependencies {
+        def tomcatVersion = '7.0.68'
+        tomcat("org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+                "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
+                "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}")
+    }
+}*/
 
 
 
+/*
 
+task initEnv(type:Exec) {
+    //executable("reg")
+    def key = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment";
+    commandLine("REG", "DELETE", key)
+    println 'execResult ' + execResult
+    commandLine("REG",  "ADD", key , "/v", "GOODNEGRO", "/t", "REG_EXPAND_SZ", "/f", "/d", "UCKOFF")
+    println 'execResult ' + execResult
+//store the output instead of printing to the console:
+    standardOutput = new ByteArrayOutputStream()
+
+    //extension method stopTomcat.output() can be used to obtain the output:
+    ext.output = {
+        return standardOutput.toString()
+    }
+}*/
 
 
 
