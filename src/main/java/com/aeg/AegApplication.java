@@ -19,36 +19,41 @@ import com.aeg.config.ApplicationConfig;
 import com.aeg.config.EnvironmentValidator;
 import com.aeg.config.IntegrationConfig;
 import com.aeg.config.MailConfig;
+import de.codecentric.boot.admin.config.EnableAdminServer;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Validator;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Log4j2
-@SpringBootApplication
-@EnableConfigurationProperties
-@Import({IntegrationConfig.class, ApplicationConfig.class, MailConfig.class})
-public class AegApplication extends SpringBootServletInitializer{
+@Configuration
+@EnableAutoConfiguration
+@EnableAdminServer
+@ComponentScan("com.aeg")
+public class AegApplication {
 
 	@Bean
 	public Validator environmentValidator() {
 		return new EnvironmentValidator();
 	}
 
-	@Override
+	/*@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(AegApplication.class);
-	}
+	}*/
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder()
-				.sources(AegApplication.class)
-				.profiles()
-				.run(args);
+		SpringApplication.run(AegApplication.class, args);
 
 	}
 

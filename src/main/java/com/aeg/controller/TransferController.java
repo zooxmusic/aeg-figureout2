@@ -14,7 +14,7 @@ public class TransferController {
     @Autowired
     private TransferService transferService;
 
-    @RequestMapping(value = "/inbound/transfer", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = "/inbound/transfer")
     public TransferResult transferAllInbound() {
         try {
             transferService.transferInbound();
@@ -25,7 +25,7 @@ public class TransferController {
         return TransferResult.successful();
     }
 
-    @RequestMapping(value = "/inbound/transfer/{partner}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = "/inbound/transfer/{partner}")
     public TransferResult transferInbound(@PathVariable String partner) {
         try {
             transferService.transferInbound(partner);
@@ -36,7 +36,7 @@ public class TransferController {
         return TransferResult.successful();
     }
 
-    @RequestMapping(value = "/outbound/transfer/{partner}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = "/outbound/transfer/{partner}")
     public TransferResult transferOutbound(@PathVariable String partner) {
         try {
             transferService.transferOutbound(partner);
@@ -47,7 +47,7 @@ public class TransferController {
         return TransferResult.successful();
     }
 
-    @RequestMapping(value = "/outbound/transfer", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = "/outbound/transfer")
     public TransferResult transferAllOutbound() {
         try {
             transferService.transferOutbound();

@@ -8,17 +8,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
-
+/*
 @Component
 @Configuration
-@ConfigurationProperties
+@ConfigurationProperties*/
 public class ApplicationConfig {
 
-    @NotNull
+/*    @NotNull
     @Valid
     private String aegHome;
 
     public String getAegHome() {
         return aegHome;
-    }
+    }*/
 }
